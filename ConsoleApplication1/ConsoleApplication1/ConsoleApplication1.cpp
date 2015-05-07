@@ -1,4 +1,4 @@
-// ConsoleApplication1.cpp : �R���\�[�� �A�v���P�[�V�����̃G���g�� �|�C���g���`���܂��B
+﻿// ConsoleApplication1.cpp : コンソール アプリケーションのエントリ ポイントを定義します。
 //
 
 #include "stdafx.h"
@@ -10,7 +10,13 @@ struct from_range
 {
 	typedef typename std::iterator_traits<TIterator>::value_type value_type;
 
+	// from_range维护三个指向数据的迭代器
+	// 当前，其次，末尾
 	TIterator current, upcoming, end;
+	// from_range的构造器
+	// 当前迭代器指向容器的开头
+	// 其次迭代器指向容器的开头
+	// 末尾迭代器指向容器的末尾
 	from_range(TIterator begin, TIterator end)
 		: current(begin), upcoming(begin), end(end) {}
 
