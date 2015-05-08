@@ -12,7 +12,7 @@ struct xxx_range
 {
 	// range接口的成员类型
 	// 其含义为range类的front方法所返回的当前数据的值类型
-	using value_type = ...;
+	using value_type = typename ...;
 
 	// range接口的成员方法
 	// 重载>>操作符，该操作符接收一个build对象作为右操作符
@@ -77,11 +77,11 @@ struct select_range
 	// 其含义为转换源range所包含数据的值类型
 	using value_type = typename decltype(std::declval<TSelector>()(std::declval<TRange::value_type>()));
 
-	// where_range内含两个成员
+	// select_range内含两个成员
 	// 转换源range，映射函数selector
 	TRange range;
 	TSelector selector;
-	// where_range的构造器
+	// select_range的构造器
 	select_range(TRange range, TSelector selector)
 		: range(range), selector(selector) {}
 
@@ -90,7 +90,7 @@ struct select_range
 	// 该操作符将自身传给builder对象的build方法，通过调用该方法实现对range的转换
 	template<typename TRangeBuilder>
 	decltype(auto) operator>>(TRangeBuilder builder) const { return builder.build(*this); }
-	// front方法，返回转换源range的当前数据
+	// front方法，返回对转换源range的当前数据进行映射后的结果
 	decltype(auto) front() const { return selector(range.front()); }
 	// next方法，当前数据不存在则返回false，若存在则准备当前数据并返回true
 	// 具体实现为
@@ -134,7 +134,7 @@ struct where_range
 	// 该操作符将自身传给builder对象的build方法，通过调用该方法实现对range的转换
 	template<typename TRangeBuilder>
 	decltype(auto) operator>>(TRangeBuilder builder) const { return builder.build(*this); }
-	// front方法，返回对转换源range的当前数据进行映射后的结果
+	// front方法，返回转换源range的当前数据
 	decltype(auto) front() const { return range.front(); }
 	// next方法，当前数据不存在则返回false，若存在则准备当前数据并返回true
 	// 具体实现为
@@ -199,12 +199,12 @@ auto to_vector() { return to_vector_builder(); }
 int main()
 {
 	int a[] = {1, 2, 3, 4};
-	// 找出数组a中所有的偶数，将结果存放到一个vector对象中
+	// 找出数组a中所有的偶数，乘以2，将结果存放到一个vector对象中
 	auto v = from(a) >> where([](int n){return n % 2 == 0;}) >> select([](int n){return n * 2;}) >> to_vector();
 	for(int i : v) std::cout << i << std::endl;
 }
 
 /*
-2
 4
+8
 */
