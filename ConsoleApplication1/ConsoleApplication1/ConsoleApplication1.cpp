@@ -74,7 +74,7 @@ template<typename TRange, typename TSelector>
 struct select_range
 {
 	// range接口的成员类型
-	// 其含义为转换源range所包含数据的值类型
+	// 其含义为转换源range所包含数据经过映射后的值类型
 	using value_type = typename decltype(std::declval<TSelector>()(std::declval<TRange::value_type>()));
 
 	// select_range内含两个成员
@@ -101,9 +101,9 @@ struct select_range
 template<typename TSelector>
 struct select_builder
 {
-	// where_builder只包含一个成员：映射函数selector
+	// select_builder只包含一个成员：映射函数selector
 	TSelector selector;
-	// where_builder的构造器
+	// select_builder的构造器
 	select_builder(TSelector selector) : selector(selector) {}
 
 	// builder接口的成员方法
