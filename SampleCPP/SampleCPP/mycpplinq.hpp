@@ -1,9 +1,4 @@
-﻿// ConsoleApplication1.cpp : コンソール アプリケーションのエントリ ポイントを定義します。
-//
-
-#include "stdafx.h"
-#include <iostream>
-#include <vector>
+﻿#pragma once
 
 /*
 
@@ -195,16 +190,3 @@ template<typename TPredicate>
 auto where(TPredicate predicate) { return where_builder<TPredicate>(predicate); }
 // LINQ操作符to_vector，生成并返回to_vector_builder对象
 auto to_vector() { return to_vector_builder(); }
-
-int main()
-{
-	int a[] = {1, 2, 3, 4};
-	// 找出数组a中所有的偶数，乘以2，将结果存放到一个vector对象中
-	auto v = from(a) >> where([](int n){return n % 2 == 0;}) >> select([](int n){return n * 2;}) >> to_vector();
-	for(int i : v) std::cout << i << std::endl;
-}
-
-/*
-4
-8
-*/
